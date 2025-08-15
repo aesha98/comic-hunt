@@ -9,7 +9,7 @@
 //
 
 
-const API_KEY = "1b6c0ef4333e124abc4bdb01545037a7512d808e";
+const API_KEY = "";
 const BASE = "https://comicvine.gamespot.com/api";
 if (!API_KEY) {
   console.error("Set COMICVINE_API_KEY env var first.");
