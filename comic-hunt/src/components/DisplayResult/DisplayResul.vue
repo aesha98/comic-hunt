@@ -42,6 +42,10 @@ async function runSearch(term, page = 1) {
     characters.value = [];
     charactersTotal.value = 0;
     charactersPage.value = 1;
+    selectedCharacter.value = null;
+    comics.value = [];
+    comicsTotal.value = 0;
+    comicsPage.value = 1;
     return;
   }
   loadingSearch.value = true;
@@ -51,6 +55,18 @@ async function runSearch(term, page = 1) {
     characters.value = data.results;
     charactersTotal.value = data.total;
     charactersPage.value = data.page;
+    // auto-select first character and load comics
+    if (characters.value.length > 0) {
+      selectedCharacter.value = characters.value[0];
+      comicsPage.value = 1;
+      await loadComics(1);
+      router.replace({ name: 'character', params: { id: selectedCharacter.value.id } });
+    } else {
+      selectedCharacter.value = null;
+      comics.value = [];
+      comicsTotal.value = 0;
+      comicsPage.value = 1;
+    }
   } catch (e) {
     searchError.value = e.message || 'Search failed';
   } finally {
@@ -95,10 +111,6 @@ watch(
   () => props.searchTerm,
   (term) => {
     runSearch(term || '');
-    selectedCharacter.value = null;
-    comics.value = [];
-    comicsTotal.value = 0;
-    comicsPage.value = 1;
   }
 );
 

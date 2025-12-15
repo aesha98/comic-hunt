@@ -1,29 +1,12 @@
 <script setup>
-import { ref, watch, onBeforeUnmount } from 'vue';
+import { ref } from 'vue';
 
 const emit = defineEmits(['search']);
 const term = ref('');
-let debounceId = null;
-
-function triggerSearch(immediate = false) {
-  if (debounceId) clearTimeout(debounceId);
-  const run = () => emit('search', term.value.trim());
-  if (immediate) {
-    run();
-  } else {
-    debounceId = setTimeout(run, 350);
-  }
-}
 
 function onSubmit() {
-  triggerSearch(true);
+  emit('search', term.value.trim());
 }
-
-watch(term, () => triggerSearch(false));
-
-onBeforeUnmount(() => {
-  if (debounceId) clearTimeout(debounceId);
-});
 </script>
 
 <template>
