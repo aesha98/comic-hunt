@@ -1,4 +1,4 @@
-import { createMemoryHistory, createRouter} from "vue-router";
+import { createWebHistory, createRouter} from "vue-router";
 import { useUserStore } from "../stores/user";
 import Login from "../components/Login/Login.vue";
 import HomePage from "../components/HomePage.vue";
@@ -7,10 +7,11 @@ const routes = [
 	{ path: '/', redirect: '/login' },                        
 	{ path: '/login', name: 'login', component: Login },
 	{ path: '/home',  name: 'home',  component: HomePage, meta: { requiresAuth: true } },
+  { path: '/character/:id', name: 'character', component: HomePage, meta: { requiresAuth: true }, props: true },
   ];
 
 const router = createRouter({
-	history:createMemoryHistory(),
+	history:createWebHistory(),
 	routes,
 })
 

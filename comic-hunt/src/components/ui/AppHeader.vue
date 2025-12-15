@@ -1,17 +1,20 @@
 <script setup>
 import Searchbar from './Searchbar.vue'
-import { MagnifyingGlassIcon } from '@heroicons/vue/24/solid'
 import { useUserStore } from '../../stores/user';
-import { useRoute } from 'vue-router';
-import {nextTick} from 'vue';
+import { useRouter } from 'vue-router';
+import { defineEmits } from 'vue';
 
 const user = useUserStore();
-const router = useRoute();
+const router = useRouter();
+const emit = defineEmits(['search']);
+
+function onSearch(term) {
+  emit('search', term);
+}
 
 async function logout(){
 	user.logout();
-	await nextTick();
-	router.replace({name: 'Login'})
+	await router.replace({name: 'login'})
 }
 </script>
 
@@ -31,12 +34,7 @@ async function logout(){
 
         <!-- desktop / tablet search -->
         <div class="flex flex-1 items-center gap-2">
-          <Searchbar class="flex-1"/>
-		<button
-			class="p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 active:scale-[.98] transition"
-			type="submit">
-			<MagnifyingGlassIcon class="h-5 w-5"/>
-		</button>
+          <Searchbar class="flex-1" @search="onSearch"/>
         </div>
       </div>
 
@@ -62,11 +60,11 @@ async function logout(){
 
     <!-- mobile search (stacks below bar) -->
     <div class="sm:hidden max-w-7xl mx-auto px-4 pb-3">
-      <Searchbar />
+      <Searchbar @search="onSearch" />
     </div>
   </header>
 </template>
-
 <style scoped>
 /* no custom CSS needed — Tailwind handles it */
 </style>
+
